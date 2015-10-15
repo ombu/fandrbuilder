@@ -1,0 +1,139 @@
+
+$gray: #C0C0C0;
+$blue: #00bcd4;
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: $gray;
+
+  &, * {
+    box-sizing: border-box;
+  }
+}
+
+hr {
+  border: none;
+  height: 2px;
+  background: #F0F0F0;
+}
+
+.fnr-toolbar {
+  button {
+    &.active {
+      background: none $gray !important;
+      padding-bottom: 10px !important;
+      margin-bottom: 0px !important;
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+  }
+}
+
+$cardPadding: 10px;
+.card-wrapper {
+  overflow: hidden;
+  margin: $cardPadding;
+}
+
+.project-scope-page {
+
+  .active-scope {
+    float: left;
+    width: percentage(3/4);
+  }
+
+  .other-scopes {
+    width: percentage(1/4);
+    float: right;
+    padding-right: 24px;
+    margin-top: 24px;
+  }
+
+  .feature-card {
+    $perRow: 3;
+    padding: $cardPadding;
+    float: left;
+    width: percentage(1/$perRow);
+    cursor: pointer;
+
+    &:nth-child(#{$perRow}n+1) {
+      clear: left;
+    }
+  }
+
+  .scope-card {
+    margin-bottom: $cardPadding;
+    .scope-card-content {
+      h4 {
+        margin: 0 0 6px 0;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+      }
+      padding: 16px;
+    }
+  }
+
+}
+
+.feature-dialog {
+  @include clearfix();
+  position: relative;
+
+  .feature-info {
+    padding: 0 16px 0 8px;
+  }
+
+  .feature-dialog-children { display: none; }
+
+  &.has-children {
+    .feature-scope-list {
+      width: 60%;
+    }
+    .feature-dialog-children {
+      display: block;
+    }
+  }
+
+  .feature-scope-list {
+    padding: 16px 0 16px 16px;
+    min-height: 80%;
+    .scope-item {
+      &.active {
+        background: none $blue !important;
+      }
+    }
+  }
+
+  .feature-dialog-children {
+    width: 40%;
+    border-top: 2px solid $blue;
+    border-left: 2px solid $blue;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: scroll;
+  }
+}

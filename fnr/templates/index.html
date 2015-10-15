@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+  <div id="root"></div>
+{% endblock content %}
+
+{% block js %}
+  <script src="{% static "dist/bundle.js" %}" type="text/javascript" charset="utf-8"></script>
+{% endblock js %}

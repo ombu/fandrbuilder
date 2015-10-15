@@ -37,3 +37,13 @@ Login to admin interface:
     http://127.0.0.1:8000/admin/
 
 ## Development
+
+Install front-end development tools:
+
+    $ cd fnr/static
+    $ npm install
+
+Run javascript watch and compilation:
+
+    $ cd fnr/static
+    $ npm run watch
