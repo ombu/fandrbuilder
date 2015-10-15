@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'fnr',
     'rest_framework',
     'taggit_serializer',
+    'website',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,6 +66,8 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],

@@ -1,5 +1,5 @@
 from fnr.models import Feature, Project, Requirement
-from fnr.serializers import FeatureSerializer, ProjectSerializer, RequirementSerializer
+from fnr.serializers import FeatureSerializer, ProjectSerializer, ProjectListSerializer, RequirementSerializer
 from rest_framework import generics
 
 class FeatureList(generics.ListCreateAPIView):
@@ -21,7 +21,7 @@ class ProjectList(generics.ListCreateAPIView):
     List all features, or create a new project.
     """
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectListSerializer
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     """

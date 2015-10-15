@@ -10,32 +10,39 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+
 class Feature(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     effort = models.SmallIntegerField()
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='features')
     tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.name
 
+
 class Scope(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     order = models.SmallIntegerField()
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='scopes')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['order']
+
 
 class Audience(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='audiences')
 
     def __str__(self):
         return self.name
+
 
 class Requirement(models.Model):
     scope = models.ForeignKey(Scope)
@@ -54,3 +61,6 @@ class Requirement(models.Model):
     )
 
     type = models.CharField(max_length=128, choices=TYPE_CHOICES)
+
+    class Meta:
+        ordering = ['order']
