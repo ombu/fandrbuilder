@@ -13,5 +13,9 @@
   <body class="{% block bodyclass %}{% endblock %}">
       {% block content %} {% endblock %}
       {% block js %} {% endblock %}
+
+      {% if debug %}
+        <script src="http://localhost:35729/livereload.js"></script>
+      {% endif %}
   </body>
 </html>

@@ -6,5 +6,9 @@
 {% endblock content %}
 
 {% block js %}
-  <script src="{% static "dist/bundle.js" %}" type="text/javascript" charset="utf-8"></script>
+  {% if debug %}
+      <script src="{% static "dist/bundle-dev.js" %}" type="text/javascript" charset="utf-8"></script>
+  {% else %}
+      <script src="{% static "dist/bundle.js" %}" type="text/javascript" charset="utf-8"></script>
+  {% endif %}
 {% endblock js %}

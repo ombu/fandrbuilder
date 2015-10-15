@@ -1,8 +1,12 @@
+/**
+ * Main webpack config. Writes the production bundle.
+ */
+
 var path = require('path');
 var webpack = require('webpack');
+var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
   entry: [
     './src/index'
   ],
@@ -14,9 +18,6 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      __DEVTOOLS__: false
-    })
   ],
   resolve: {
     extensions: ['', '.js']
