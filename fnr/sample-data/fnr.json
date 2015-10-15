@@ -1,0 +1,331 @@
+[
+{
+  "fields": {
+    "default_scope": 1,
+    "name": "OMBU Media"
+  },
+  "model": "fnr.project",
+  "pk": 1
+},
+{
+  "fields": {
+    "default_scope": 3,
+    "name": "Project 2"
+  },
+  "model": "fnr.project",
+  "pk": 2
+},
+{
+  "fields": {
+    "project": 1,
+    "effort": 8,
+    "name": "Creating Media",
+    "description": "Facilitates adding media files to the site."
+  },
+  "model": "fnr.feature",
+  "pk": 1
+},
+{
+  "fields": {
+    "project": 1,
+    "effort": 10,
+    "name": "Using Media",
+    "description": "Using media files as content on the site."
+  },
+  "model": "fnr.feature",
+  "pk": 2
+},
+{
+  "fields": {
+    "project": 1,
+    "effort": 16,
+    "name": "Selecting Media",
+    "description": "A workflow for selecting media files."
+  },
+  "model": "fnr.feature",
+  "pk": 3
+},
+{
+  "fields": {
+    "project": 1,
+    "effort": 14,
+    "name": "Media Field",
+    "description": "An entity field that uses OMBU Media file selection."
+  },
+  "model": "fnr.feature",
+  "pk": 4
+},
+{
+  "fields": {
+    "project": 2,
+    "effort": 40,
+    "name": "Discovery",
+    "description": "The first phase of the project, where we gather all kinds of information about it."
+  },
+  "model": "fnr.feature",
+  "pk": 5
+},
+{
+  "fields": {
+    "project": 1,
+    "order": 0,
+    "name": "Icebox",
+    "description": "Where requirements chill until they're ready for action."
+  },
+  "model": "fnr.scope",
+  "pk": 1
+},
+{
+  "fields": {
+    "project": 1,
+    "order": 1,
+    "name": "Accepted",
+    "description": "Requirements that are ready to go."
+  },
+  "model": "fnr.scope",
+  "pk": 2
+},
+{
+  "fields": {
+    "project": 2,
+    "order": 0,
+    "name": "Release 1",
+    "description": "The 0.1 version of the site."
+  },
+  "model": "fnr.scope",
+  "pk": 3
+},
+{
+  "fields": {
+    "project": 2,
+    "order": 2,
+    "name": "Release 2",
+    "description": "The 0.2 version of the site."
+  },
+  "model": "fnr.scope",
+  "pk": 4
+},
+{
+  "fields": {
+    "project": 1,
+    "name": "Administrator",
+    "description": "A person that administers the site and can change site-wide settings."
+  },
+  "model": "fnr.audience",
+  "pk": 1
+},
+{
+  "fields": {
+    "project": 1,
+    "name": "Editor",
+    "description": "A person who can edit content on the site."
+  },
+  "model": "fnr.audience",
+  "pk": 2
+},
+{
+  "fields": {
+    "project": 1,
+    "name": "Developer",
+    "description": "A developer of the site."
+  },
+  "model": "fnr.audience",
+  "pk": 3
+},
+{
+  "fields": {
+    "project": 1,
+    "name": "Visitor",
+    "description": "Someone who visits and consumes the site."
+  },
+  "model": "fnr.audience",
+  "pk": 4
+},
+{
+  "fields": {
+    "project": 2,
+    "name": "Project Manager",
+    "description": "The manager of the project."
+  },
+  "model": "fnr.audience",
+  "pk": 5
+},
+{
+  "fields": {
+    "project": 2,
+    "name": "Product Owner",
+    "description": "The owner of the product."
+  },
+  "model": "fnr.audience",
+  "pk": 6
+},
+{
+  "fields": {
+    "requirement": "I can create a media asset by uploading a file of a valid format: .zip, .doc(x), .xls(x), ppt(x),  .pdf, .jpg, .png",
+    "type": "user_story",
+    "feature": 1,
+    "audience": 1,
+    "scope": 1,
+    "effort": 4,
+    "order": 0
+  },
+  "model": "fnr.requirement",
+  "pk": 1
+},
+{
+  "fields": {
+    "requirement": "I can create a video media asset by providing a Vimeo URL",
+    "type": "user_story",
+    "feature": 1,
+    "audience": 1,
+    "scope": 1,
+    "effort": 12,
+    "order": 0
+  },
+  "model": "fnr.requirement",
+  "pk": 2
+},
+{
+  "fields": {
+    "requirement": "After uploading a new media assets, I can categorize it, tag it, and provide other metadata",
+    "type": "user_story",
+    "feature": 1,
+    "audience": 2,
+    "scope": 1,
+    "effort": 5,
+    "order": 3
+  },
+  "model": "fnr.requirement",
+  "pk": 3
+},
+{
+  "fields": {
+    "requirement": "When I use a image media asset, it will automatically be scaled and cropped appropriately by the CMS for the various contexts in which it might appear",
+    "type": "user_story",
+    "feature": 2,
+    "audience": 2,
+    "scope": 1,
+    "effort": 5,
+    "order": 2
+  },
+  "model": "fnr.requirement",
+  "pk": 4
+},
+{
+  "fields": {
+    "requirement": "When creating content on the site, I can choose assets from the Media Library to place in my content",
+    "type": "user_story",
+    "feature": 2,
+    "audience": 2,
+    "scope": 1,
+    "effort": 9,
+    "order": 5
+  },
+  "model": "fnr.requirement",
+  "pk": 5
+},
+{
+  "fields": {
+    "requirement": "While viewing media that was embedded in an RTE, I see the fully rendered asset in the style selected by the editor",
+    "type": "user_story",
+    "feature": 2,
+    "audience": 4,
+    "scope": 1,
+    "effort": 7,
+    "order": 6
+  },
+  "model": "fnr.requirement",
+  "pk": 6
+},
+{
+  "fields": {
+    "requirement": "When embedding media into an RTE, the result is a single HTML tag with necessary medatada in data attributes",
+    "type": "user_story",
+    "feature": 2,
+    "audience": 3,
+    "scope": 1,
+    "effort": 13,
+    "order": 7
+  },
+  "model": "fnr.requirement",
+  "pk": 7
+},
+{
+  "fields": {
+    "requirement": "I can filter media items by name",
+    "type": "user_story",
+    "feature": 3,
+    "audience": 2,
+    "scope": 1,
+    "effort": 2,
+    "order": 8
+  },
+  "model": "fnr.requirement",
+  "pk": 8
+},
+{
+  "fields": {
+    "requirement": "I can view a paginated grid of all media items sorted by upload date",
+    "type": "user_story",
+    "feature": 3,
+    "audience": 2,
+    "scope": 1,
+    "effort": 8,
+    "order": 9
+  },
+  "model": "fnr.requirement",
+  "pk": 9
+},
+{
+  "fields": {
+    "requirement": "When building a website, I can add a Media field to content that would allow administrators to select media from the Media Library, prefiltered by any of the filters available in the Media Library",
+    "type": "user_story",
+    "feature": 4,
+    "audience": 3,
+    "scope": 1,
+    "effort": 22,
+    "order": 9
+  },
+  "model": "fnr.requirement",
+  "pk": 10
+},
+{
+  "fields": {
+    "requirement": "When adding a file field I can define which file types the widget will allow for upload, browsing and selection.",
+    "type": "user_story",
+    "feature": 4,
+    "audience": 3,
+    "scope": 2,
+    "effort": 20,
+    "order": 10
+  },
+  "model": "fnr.requirement",
+  "pk": 11
+},
+{
+  "fields": {
+    "requirement": "Developer Kickoff",
+    "type": "user_story",
+    "feature": 5,
+    "audience": 5,
+    "scope": 3,
+    "effort": 1,
+    "order": 0
+  },
+  "model": "fnr.requirement",
+  "pk": 12
+},
+{
+  "fields": {
+    "requirement": "Meet with and collect requirements from client.",
+    "type": "user_story",
+    "feature": 5,
+    "audience": 6,
+    "scope": 3,
+    "effort": 18,
+    "order": 1
+  },
+  "model": "fnr.requirement",
+  "pk": 13
+}
+]

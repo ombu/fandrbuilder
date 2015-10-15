@@ -3,15 +3,6 @@ from django.db import models
 # Import taggit
 from taggit.managers import TaggableManager
 
-class Feature(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    effort = models.SmallIntegerField()
-    tags = TaggableManager(blank=True)
-
-    def __str__(self):
-        return self.name
-
 class Project(models.Model):
     name = models.CharField(max_length=200)
     default_scope = models.ForeignKey('Scope', related_name='default_scope', blank=True, null=True,)
@@ -19,6 +10,15 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+class Feature(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    effort = models.SmallIntegerField()
+    project = models.ForeignKey(Project)
+    tags = TaggableManager(blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Scope(models.Model):
     name = models.CharField(max_length=200)
@@ -49,8 +49,8 @@ class Requirement(models.Model):
         return self.requirement
 
     TYPE_CHOICES = (
-        ('user_story', 'user story'),
-        ('validation', 'validation'),
+        ('user_story', 'User Story'),
+        ('validation', 'Validation'),
     )
 
     type = models.CharField(max_length=128, choices=TYPE_CHOICES)

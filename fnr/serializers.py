@@ -8,7 +8,7 @@ class FeatureSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Feature
-        fields = ('id', 'name', 'description', 'effort', 'tags')
+        fields = ('id', 'name', 'description', 'effort', 'tags', 'project')
 
     def create(self, validated_data):
         """

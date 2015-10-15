@@ -24,9 +24,9 @@ Optionally, create a super user
 
     $ ./manage.py createsuperuser
 
-Optionally, load sample data (vendor pages):
+Optionally, load sample data:
 
-    $ ./manage.py loaddata website/initial-data.json
+    $ ./manage.py loaddata fnr/sample-data/fnr.json
 
 Start server:
 
@@ -34,6 +34,6 @@ Start server:
 
 Login to admin interface:
 
-    http://127.0.0.1:8000/admin/login/
+    http://127.0.0.1:8000/admin/
 
 ## Development
