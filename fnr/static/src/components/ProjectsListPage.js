@@ -7,7 +7,7 @@ import Toolbar from './Toolbar';
 
 function mapStateToProps(state) {
   return {
-    projects: state.projects,
+    projectsList: state.projectsList,
   };
 }
 
@@ -21,11 +21,11 @@ class ProjectsListPage extends Component {
           <div>
             <h1>Projects</h1>
             <List>
-              {this.props.projects.map((project) => {
+              {this.props.projectsList.map((projectListItem) => {
                 return <ListItem
-                          key={project.id}
-                          primaryText={project.name}
-                          onTouchTap={this._itemTouchTap.bind(this, project)}
+                          key={projectListItem.id}
+                          primaryText={projectListItem.name}
+                          onTouchTap={this._itemTouchTap.bind(this, projectListItem)}
                         >
                        </ListItem>
               })}
@@ -36,20 +36,19 @@ class ProjectsListPage extends Component {
     )
   }
 
-  _itemTouchTap(project) {
-    var path = `/project/${project.id}/scope/${project.scopes[0].id}`;
+  _itemTouchTap(projectListItem) {
+    var path = `/project/${projectListItem.id}/scope/${projectListItem.scopes[0]}`;
     this.context.history.pushState(null, path);
   }
 
 }
 
 ProjectsListPage.propTypes = {
-  projects: PropTypes.any.isRequired
+  projectsList: PropTypes.any.isRequired
 };
 
 ProjectsListPage.contextTypes = {
   history: PropTypes.object
 };
-
 
 export default connect(mapStateToProps)(ProjectsListPage);

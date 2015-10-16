@@ -27,10 +27,21 @@ class FnRToolbar extends Component {
             style={{marginLeft: 0}}
             onTouchTap={() => {this.context.history.pushState(null, '/')}}
             />
+            {this._renderLoading()}
         </ToolbarGroup>
         {this.props.children}
       </Toolbar>
     )
+  }
+
+  _renderLoading() {
+    if (this.props.loading > 0) {
+      const style = {
+        paddingLeft: 0
+      };
+      return (<FontIcon className="material-icons animate-spin" style={style}>cached</FontIcon>)
+    }
+    return undefined;
   }
 
 }

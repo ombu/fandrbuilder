@@ -3,19 +3,13 @@ from django.db import models
 # Import taggit
 from taggit.managers import TaggableManager
 
-class Project(models.Model):
-    name = models.CharField(max_length=200)
-    default_scope = models.ForeignKey('Scope', related_name='default_scope', blank=True, null=True,)
-
-    def __str__(self):
-        return self.name
 
 
 class Feature(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     effort = models.SmallIntegerField()
-    project = models.ForeignKey(Project, related_name='features')
+    project = models.ForeignKey('Project', related_name='features')
     tags = TaggableManager(blank=True)
 
     def __str__(self):
@@ -26,7 +20,7 @@ class Scope(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     order = models.SmallIntegerField()
-    project = models.ForeignKey(Project, related_name='scopes')
+    project = models.ForeignKey('Project', related_name='scopes')
 
     def __str__(self):
         return self.name
@@ -38,7 +32,7 @@ class Scope(models.Model):
 class Audience(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    project = models.ForeignKey(Project, related_name='audiences')
+    project = models.ForeignKey('Project', related_name='audiences')
 
     def __str__(self):
         return self.name
@@ -64,3 +58,15 @@ class Requirement(models.Model):
 
     class Meta:
         ordering = ['order']
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=200)
+    default_scope = models.ForeignKey('Scope', related_name='default_scope', blank=True, null=True,)
+
+    def __str__(self):
+        return self.name
+
+    def requirements(self):
+        scope_ids = [s.id for s in self.scopes.all()]
+        return Requirement.objects.filter(scope__in=scope_ids).all()

@@ -6,6 +6,15 @@
 {% endblock content %}
 
 {% block js %}
+
+  <script type="text/javascript" charset="utf-8">
+    window.initialState = {
+      projectsList: {{ projectsJSON|safe }},
+      projects: {},
+      ui: {}
+    };
+  </script>
+
   {% if debug %}
       <script src="{% static "dist/bundle-dev.js" %}" type="text/javascript" charset="utf-8"></script>
   {% else %}

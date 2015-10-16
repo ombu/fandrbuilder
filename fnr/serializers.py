@@ -25,25 +25,27 @@ class FeatureSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'effort', 'tags', 'project')
 
 
-class ProjectListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Project
-        fields = ('id', 'name')
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-
-    scopes = ScopeSerializer(many=True)
-    audiences = AudienceSerializer(many=True)
-
-    class Meta:
-        model = Project
-        fields = ('id', 'name', 'default_scope', 'scopes', 'audiences')
-
-
 class RequirementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Requirement
         fields = ('id', 'scope', 'feature', 'order', 'audience', 'requirement', 'effort')
+
+
+class ProjectsListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'scopes')
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    audiences = AudienceSerializer(many=True, read_only=True)
+    scopes = ScopeSerializer(many=True, read_only=True)
+    features = FeatureSerializer(many=True, read_only=True)
+    requirements = RequirementSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'default_scope', 'scopes', 'audiences', 'features', 'requirements')
+

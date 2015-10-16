@@ -20,13 +20,19 @@ import RequirementAddDialog from './RequirementAddDialog';
 
 import { ifMatchReduce, onlyUnique } from '../util';
 
-import { showAddRequirement, showAddFeature, hideAdd } from '../actions';
+import {
+  showAddRequirement,
+  showAddFeature,
+  hideAdd,
+  loadProject
+} from '../actions';
 
 function mapStateToProps(state) {
   return {
     projects: state.projects,
     ui: {
-      add: state.ui.add
+      add: state.ui.add,
+      loading: state.ui.loading
     }
   };
 }
@@ -35,35 +41,32 @@ class ProjectPage extends Component {
 
   componentWillMount() {
     let id = parseInt(this.props.params.projectId, 10);
-    this.project = this.props.projects.reduce(ifMatchReduce('id', id), undefined);
+    this.project = this.props.projects[id] || undefined;
+    if (!this.project) {
+      this.props.dispatch(loadProject(id));
+    }
   }
 
   render() {
 
     let project = this.project;
+
+    if (!project) {
+      return (
+        <div className="project-scope-page">
+          <Toolbar loading={this.props.ui.loading}>
+          </Toolbar>
+        </div>
+      )
+    }
+
     let scopeId = parseInt(this.props.params.scopeId, 10);
     let activeScope = project.scopes.reduce(ifMatchReduce('id', scopeId), undefined);
     let otherScopes = project.scopes.filter((s) => s.id !== activeScope.id);
 
-    if (!project) {
-      let actions = [
-        { text: 'Go back' }
-      ]
-      return (
-        <Dialog
-          actions={actions}
-          modal={true}
-          openImmediately={true}
-          onDismiss={() => this.context.history.goBack()}
-        >
-          Project not found
-        </Dialog>
-      )
-    }
-
     return (
       <div className="project-scope-page">
-        <Toolbar>
+        <Toolbar loading={this.props.ui.loading}>
           <ToolbarGroup className="scope-buttons" float="left">
             <ToolbarTitle text={project.name} />
           </ToolbarGroup>

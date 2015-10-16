@@ -6,8 +6,10 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import configureStore from './store/store';
 import mui from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import 'babel-core/polyfill';
 
 import App from './components/App';
+import NotFound from './components/NotFound';
 import ProjectsListPage from './components/ProjectsListPage';
 import ProjectPage from './components/ProjectPage';
 import FeatureDialog from './components/FeatureDialog';
@@ -15,14 +17,13 @@ import FeatureEditDialog from './components/FeatureEditDialog';
 import RequirementInfo from './components/RequirementInfo';
 import RequirementEdit from './components/RequirementEdit';
 import './scss/main.scss';
-import initialState from './store/devInitialState';
 
 injectTapEventPlugin();
 
 let ThemeManager = new mui.Styles.ThemeManager();
 ThemeManager.palette.canvasColor = 'transparent';
 
-const store = configureStore(initialState);
+const store = configureStore(window.initialState);
 const history = createBrowserHistory();
 
 class Root extends React.Component {
@@ -46,6 +47,7 @@ class Root extends React.Component {
                   <Route name="project-feature-requirement-edit" path="requirement/:requirementId/edit" component={RequirementEdit} />
               </Route>
             </Route>
+            <Route name="not-found" path="*" component={NotFound} />
           </Route>
         </Router>
       </Provider>
