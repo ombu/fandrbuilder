@@ -27,9 +27,11 @@ import {
   loadProject
 } from '../actions';
 
-function mapStateToProps(state) {
+
+function mapStateToProps(state, ownProps) {
   return {
-    projects: state.projects,
+    id: ownProps.params.projectId,
+    project: state.projectsById[ownProps.params.projectId] || undefined,
     ui: {
       add: state.ui.add,
       loading: state.ui.loading
@@ -37,25 +39,24 @@ function mapStateToProps(state) {
   };
 }
 
-class ProjectPage extends Component {
-
-  componentWillMount() {
-    let id = this.props.params.projectId;
-    let project = this.props.projects[id] || undefined;
-    this.setState({ project: project });
-    if (!project) {
-      this.props.dispatch(loadProject(id));
+function ProjectFetcher(WrappedComponent) {
+  return class extends Component {
+    componentWillMount() {
+      if (!this.props.project) {
+        this.props.dispatch(loadProject(this.props.id));
+      }
+    }
+    render() {
+      return (<WrappedComponent {...this.props} />)
     }
   }
+}
 
-  componentWillReceiveProps(nextProps) {
-    let id = nextProps.params.projectId;
-    this.setState({ project: nextProps.projects[id] || undefined });
-  }
+class ProjectPage extends Component {
 
   render() {
 
-    let project = this.state.project;
+    let project = this.props.project;
 
     if (!project) {
       return (
@@ -226,4 +227,4 @@ ProjectPage.contextTypes = {
 };
 
 
-export default connect(mapStateToProps)(ProjectPage);
+export default connect(mapStateToProps)(ProjectFetcher(ProjectPage));

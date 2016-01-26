@@ -8,21 +8,13 @@ import FeatureForm from './forms/FeatureForm';
 import { ifMatchReduce, sortByOrder, toInt } from '../util';
 import { updateFeature } from '../actions';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    projects: state.projects
+    feature: state.projectsById[ownProps.params.projectId].features.byId[ownProps.params.featureId] || undefined
   };
 }
 
 class FeatureEditDialog extends Component {
-
-  componentWillMount() {
-    let featureId = toInt(this.props.params.featureId);
-    let projectId = toInt(this.props.params.projectId);
-    this.project = this.props.projects[projectId] || undefined;
-    this.feature = this.project.features.byId[featureId];
-  }
-
 
   render() {
     return (
@@ -34,7 +26,7 @@ class FeatureEditDialog extends Component {
           autoScrollBodyContent={true}
         >
           <FeatureForm
-            feature={this.feature}
+            feature={this.props.feature}
             onSubmit={this._onSubmit.bind(this)}
           />
         </CloseableDialog>

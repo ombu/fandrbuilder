@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routeReducer } from 'react-router-redux';
 import {
   SHOW_ADD_REQUIREMENT,
   SHOW_ADD_FEATURE,
@@ -14,7 +15,7 @@ import { ifMatchReduce } from '../util';
 function noopReducer(state = {}) {
   return state;
 }
-  
+
 function uiLoadingReducer(state = 0, action) {
   switch(action.type) {
 
@@ -24,7 +25,7 @@ function uiLoadingReducer(state = 0, action) {
     case PROJECT_LOAD_COMPLETE:
       return state - 1;
 
-    default: 
+    default:
       return state;
   }
 }
@@ -96,11 +97,13 @@ function normalizeModelList(modelList) {
 
 const rootReducer = combineReducers({
   projectsList: noopReducer,
-  projects: projectsReducer,
+  projectsById: projectsReducer,
   ui: combineReducers({
     add: uiAddReducer,
     loading: uiLoadingReducer
-  })
+  }),
+  routing: routeReducer
 });
 
 export default rootReducer;
+
