@@ -12,7 +12,7 @@ import {
 } from 'material-ui';
 import CloseableDialog from './CloseableDialog';
 import { updateRequirement } from '../actions';
-import { ifMatchReduce, sortByOrder } from '../util';
+import { ifMatchReduce, sortByOrder, pluck, denormalize, trim } from '../util';
 
 
 function mapStateToProps(state) {
@@ -25,9 +25,13 @@ function mapStateToProps(state) {
 class FeatureDialog extends Component {
 
   componentWillMount() {
-    let id = parseInt(this.props.params.featureId, 10);
-    this.project = this.props.projects.reduce(ifMatchReduce('id', parseInt(this.props.params.projectId, 10)), undefined);
-    this.feature = this.project.features.reduce(ifMatchReduce('id', id), undefined);
+    this.project = this.props.projects[this.props.params.projectId] || undefined;
+    this.feature = this.project.features.byId[this.props.params.featureId];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let id = nextProps.params.projectId;
+    this.setState({ project: nextProps.projects[id] || undefined });
   }
 
   render() {
@@ -70,7 +74,8 @@ class FeatureDialog extends Component {
   _renderScopes() {
     let feature = this.feature;
     let activeRequirementId = parseInt(this.props.params.requirementId, 10);
-    let requirementsByScope = this.project.requirements
+    let requirementsByScope = this.project.requirements.list
+                                          .map(pluck(this.project.requirements.byId))
                                           .filter((r) => r.feature == feature.id)
                                           .reduce(function(requirementsByScope, r) {
                                             if (!requirementsByScope[r.scope]) {
@@ -80,7 +85,7 @@ class FeatureDialog extends Component {
                                             return requirementsByScope;
                                           }, {});
     let scopesAndRequirements = Object.keys(requirementsByScope)
-                                      .map((scopeId) => this.project.scopes.reduce(ifMatchReduce('id', scopeId), undefined))
+                                      .map((scopeId) => this.project.scopes.byId[scopeId])
                                       .sort(sortByOrder);
 
     return scopesAndRequirements.map(function(scope) {
@@ -100,7 +105,7 @@ class FeatureDialog extends Component {
   }
 
   _renderTabs() {
-    let activeTab = this.props.location.pathname.split('/').pop();
+    let activeTab = trim('/', this.props.location.pathname).split('/').pop();
     let infoChildren = (activeTab === 'info') ? this.props.children : undefined;
     let editChildren = (activeTab === 'edit') ? this.props.children : undefined;
 
@@ -114,8 +119,7 @@ class FeatureDialog extends Component {
 
     let requirement = undefined;
     if (this.props.params.requirementId) {
-      let requirementId = parseInt(this.props.params.requirementId, 10);
-      let requirement = this.project.requirements.reduce(ifMatchReduce('id', requirementId), undefined);
+      let requirement = this.project.requirements.byId[this.props.params.requirementId];
       if (activeTab === 'info') {
         infoChildren = React.cloneElement(infoChildren, this._getRequirementInfoProps(requirement));
       }
@@ -135,17 +139,17 @@ class FeatureDialog extends Component {
   _getRequirementInfoProps(requirement) {
     return {
       requirement: requirement,
-      scope: this.project.scopes.reduce(ifMatchReduce('id', requirement.scope), undefined),
-      audience: this.project.audiences.reduce(ifMatchReduce('id', requirement.audience), undefined)
+      scope: this.project.scopes.byId[requirement.scope],
+      audience: this.project.audiences.byId[requirement.audience]
     };
   }
 
   _getRequirementEditProps(requirement) {
     return {
       requirement: requirement,
-      scopes: this.project.scopes.map((s) => { return {id: s.id, name: s.name}; }),
-      features: this.project.features.map((f) => {return {id: f.id, name: f.name}; }),
-      audiences: this.project.audiences,
+      scopes: denormalize(this.project.scopes),
+      features: denormalize(this.project.features),
+      audiences: denormalize(this.project.audiences),
       onRequirementSave: this._onRequirementSave.bind(this, requirement)
     };
   }

@@ -5,7 +5,7 @@ import {
 } from 'material-ui';
 import CloseableDialog from './CloseableDialog';
 import FeatureForm from './forms/FeatureForm';
-import { ifMatchReduce, sortByOrder } from '../util';
+import { ifMatchReduce, sortByOrder, toInt } from '../util';
 import { updateFeature } from '../actions';
 
 function mapStateToProps(state) {
@@ -17,9 +17,10 @@ function mapStateToProps(state) {
 class FeatureEditDialog extends Component {
 
   componentWillMount() {
-    let id = parseInt(this.props.params.featureId, 10);
-    this.project = this.props.projects.reduce(ifMatchReduce('id', parseInt(this.props.params.projectId, 10)), undefined);
-    this.feature = this.project.features.reduce(ifMatchReduce('id', id), undefined);
+    let featureId = toInt(this.props.params.featureId);
+    let projectId = toInt(this.props.params.projectId);
+    this.project = this.props.projects[projectId] || undefined;
+    this.feature = this.project.features.byId[featureId];
   }
 
 

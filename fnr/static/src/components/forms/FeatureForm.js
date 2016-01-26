@@ -6,13 +6,6 @@ import {
 
 class FeatureForm extends Component {
 
-  getDefaultProps() {
-    return {
-      feature: {},
-      onSubmit: function() {}
-    };
-  }
-
   componentWillMount() {
     this.setState(Object.assign({}, this.props.feature));
   }
@@ -71,5 +64,12 @@ FeatureForm.propTypes = {
   feature: PropTypes.object,
   onSubmit: PropTypes.func.isRequired
 };
+
+
+FeatureForm.defaultProps = {
+  feature: {},
+  onSubmit: function() {}
+};
+
 
 export default FeatureForm;

@@ -40,16 +40,22 @@ function mapStateToProps(state) {
 class ProjectPage extends Component {
 
   componentWillMount() {
-    let id = parseInt(this.props.params.projectId, 10);
-    this.project = this.props.projects[id] || undefined;
-    if (!this.project) {
+    let id = this.props.params.projectId;
+    let project = this.props.projects[id] || undefined;
+    this.setState({ project: project });
+    if (!project) {
       this.props.dispatch(loadProject(id));
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    let id = nextProps.params.projectId;
+    this.setState({ project: nextProps.projects[id] || undefined });
+  }
+
   render() {
 
-    let project = this.project;
+    let project = this.state.project;
 
     if (!project) {
       return (
@@ -60,9 +66,10 @@ class ProjectPage extends Component {
       )
     }
 
-    let scopeId = parseInt(this.props.params.scopeId, 10);
-    let activeScope = project.scopes.reduce(ifMatchReduce('id', scopeId), undefined);
-    let otherScopes = project.scopes.filter((s) => s.id !== activeScope.id);
+    let scopeId = this.props.params.scopeId;
+    let activeScope = project.scopes.byId[scopeId];
+    let otherScopes = project.scopes.list.filter((id) => id !== activeScope.id)
+                                         .map((id) => project.scopes.byId[id]);
 
     return (
       <div className="project-scope-page">
@@ -84,19 +91,21 @@ class ProjectPage extends Component {
     let activeScopeId = activeScope.id;
     let scopeButtons = [];
     if (project.scopes) {
-      scopeButtons = project.scopes.map((scope) => {
-        let isActive = scope.id === activeScopeId;
-        let className = isActive ? 'active' : '';
-        return (
-          <FlatButton
-            label={scope.name}
-            onTouchTap={() => {this.context.history.pushState(null, `/project/${project.id}/scope/${scope.id}`)}}
-            style={{marginLeft: 0, marginRight: 10}}
-            className={className}
-            key={scope.id}
-            />
-        )
-      });
+      scopeButtons = project.scopes.list
+        .map((id) => project.scopes.byId[id])
+        .map((scope) => {
+          let isActive = scope.id === activeScopeId;
+          let className = isActive ? 'active' : '';
+          return (
+            <FlatButton
+              label={scope.name}
+              onTouchTap={() => {this.context.history.pushState(null, `/project/${project.id}/scope/${scope.id}`)}}
+              style={{marginLeft: 0, marginRight: 10}}
+              className={className}
+              key={scope.id}
+              />
+          )
+        });
     }
 
     let addButton = <IconButton><FontIcon className="material-icons">add</FontIcon></IconButton>
@@ -114,13 +123,17 @@ class ProjectPage extends Component {
   }
 
   _renderActiveScope(project, scope) {
-    let features = project.requirements
+    let features = project.requirements.list
+                          .map((id) => project.requirements.byId[id])
                           .filter((r) => r.scope === scope.id)
                           .map((r) => r.feature)
                           .filter(onlyUnique)
-                          .map((featureId) => project.features.reduce(ifMatchReduce('id', featureId)));
+                          .map((featureId) => project.features.byId[featureId]);
+
     let featureCards = features.map(function(f) {
-      let requirements = project.requirements.filter((r) => {
+      let requirements = project.requirements.list
+                          .map((id) => project.requirements.byId[id]) 
+                          .filter((r) => {
                             return r.feature === f.id && r.scope === scope.id;
                           });
       return (
@@ -159,17 +172,19 @@ class ProjectPage extends Component {
 
   _renderOtherScopes(project, scopes) {
     let scopeCards = scopes.map(function(scope) {
-      let features = project.requirements
+      let features = project.requirements.list
+                            .map((id) => project.requirements.byId[id])
                             .filter((r) => r.scope === scope.id)
                             .map((r) => r.feature)
                             .filter(onlyUnique)
-                            .map(function(featureId) {
-                              return project.features.reduce(ifMatchReduce('id', featureId));
-                            });
+                            .map((featureId) => project.features.byId[featureId]);
+
       let requirements = features.reduce(function(requirements, feature) {
-        requirements[feature.id] = project.requirements.filter((r) => {
-                                    return (r.scope === scope.id && r.feature === feature.id);
-                                   });
+        requirements[feature.id] = project.requirements.list
+                                    .map((id) => project.requirements.byId[id])
+                                    .filter((r) => {
+                                      return (r.scope === scope.id && r.feature === feature.id);
+                                     });
         return requirements;
       }, {});
       return <ScopeCard key={scope.id} scope={scope} features={features} requirements={requirements} />

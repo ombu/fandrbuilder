@@ -8,10 +8,13 @@
 {% block js %}
 
   <script type="text/javascript" charset="utf-8">
-    window.initialState = {
-      projectsList: {{ projectsJSON|safe }},
-      projects: {},
-      ui: {}
+    window.FnR = {
+      apiPath: '/api/v1',
+      initialState: {
+        projectsList: {{ projectsJSON|safe }},
+        projects: {},
+        ui: {}
+      }
     };
   </script>
 

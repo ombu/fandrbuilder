@@ -23,7 +23,7 @@ injectTapEventPlugin();
 let ThemeManager = new mui.Styles.ThemeManager();
 ThemeManager.palette.canvasColor = 'transparent';
 
-const store = configureStore(window.initialState);
+const store = configureStore(window.FnR.initialState);
 const history = createBrowserHistory();
 
 class Root extends React.Component {

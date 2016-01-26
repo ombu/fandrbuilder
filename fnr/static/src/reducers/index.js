@@ -3,7 +3,7 @@ import {
   SHOW_ADD_REQUIREMENT,
   SHOW_ADD_FEATURE,
   HIDE_ADD,
-  UPDATE_FEATURE,
+  FEATURE_UPDATE_COMPLETE,
   UPDATE_REQUIREMENT,
   PROJECT_LOAD_START,
   PROJECT_LOAD_COMPLETE,
@@ -46,20 +46,13 @@ function uiAddReducer(state = false, action) {
   }
 }
 
-function projectsReducer(projects = [], action) {
-  //if (UPDATE_FEATURE === action.type) {
-      //let feature = action.payload;
-      //let project = projects.reduce(ifMatchReduce('id', feature.project), undefined);
-      //let projectIndex = projects.indexOf(project);
-      //let oldFeature = project.features.reduce(ifMatchReduce('id', feature.id), undefined);
-      //let featureIndex = project.features.indexOf(oldFeature);
-
-      //projects = projects.slice();
-      //projects[projectIndex].features[featureIndex] = feature;
-
-      //return projects;
-
-  //}
+function projectsReducer(projects = {}, action) {
+  if (PROJECT_LOAD_COMPLETE === action.type) {
+    let project = action.project;
+    let changeProjects = {};
+    changeProjects[project.id] = normalizeProject(project);
+    return Object.assign({}, projects, changeProjects);
+  }
   //else if (UPDATE_REQUIREMENT === action.type) {
       //let requirement = action.payload;
 
@@ -80,6 +73,25 @@ function projectsReducer(projects = [], action) {
 
   //}
   return projects;
+}
+
+function normalizeProject(project) {
+  ['scopes', 'audiences', 'features', 'requirements'].map((field) => {
+    project[field] = normalizeModelList(project[field]);
+  });
+  return project;
+}
+
+function normalizeModelList(modelList) {
+  let list = [];
+  let byId = {};
+
+  modelList.map((model) => {
+    list.push(model.id);
+    byId[model.id] = model;
+  })
+
+  return { list: list, byId: byId };
 }
 
 const rootReducer = combineReducers({
